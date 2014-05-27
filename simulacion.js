@@ -1,6 +1,9 @@
 // Lib for Cloning objects in JS
 var clone = require('clone');
 
+// So we could have CSV with our results
+fs = require("fs");
+
 // Load and instantiate Chance
 var Chance = require('chance');
 	chance = new Chance();
@@ -143,9 +146,26 @@ function iniciarSimulacion(numEscenarios,sexo) {
 	}
 }
 
-/*************************
+function escribeCsv(hashMap) {
+	var cont = 0;
+	var outData = "1-10-TSL, 1-100-TSL, 1-1000-TSL, 1-10000-TSL, 1-10-WCSL" +
+				"1-100-WCSL,1-1000-WCSL,1-10000-WCSL,1-10-WCA,1-100-WCA,1-1000-WCA,1-10000-WCA\n";
+	hashMap.forEach(function(value, key){
+		outData += hashMap.get(key);
+		if(cont < 11) {
+			outData += ","
+			++cont
+		}
+	});
+	
+	return outData;
+}
+
+/******************************
+*
 * Empieza la simulacíon
-*************************/
+*
+*******************************/
 var startTime = Date.now();
 //Simulacion para hombres
 iniciarSimulacion(10000,"H");
@@ -156,6 +176,9 @@ console.log("\nLa simulacion para hombres da como resultados: \n");
 mostrarResultados(mapResHombres);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
+//Volcamos datos a fichero csv
+var outH = escribeCsv(mapResHombres);
+fs.writeFile("results-hombres-epo.csv", outH);
 
 startTime = Date.now();
 //Simulacion para mujeres
@@ -166,3 +189,7 @@ endTime = Date.now();
 console.log("\nLa simulacion para mujeres da como resultados: \n");
 mostrarResultados(mapResMujeres);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
+
+//Volcamos datos a fichero csv
+var outM = escribeCsv(mapResMujeres);
+fs.writeFile("results-mujeres-epo.csv", outM);
