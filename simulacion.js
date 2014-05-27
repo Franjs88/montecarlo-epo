@@ -82,7 +82,6 @@ function calculaOffScore(hb, ret) {
 * Immprime por pantalla un HashMap dado
 **/
 function mostrarResultados(hashMap) {
-	//console.log(hashMap);
 	hashMap.forEach(function(value, key){
 		console.log("Escenario: "+key + " | " + " Positivos: "+value+"\n");
 	});
@@ -120,7 +119,6 @@ function buscaPositivos(numEscenarios, hbMedia, hbStdDev, retMedia, retStdDev, m
 		//Iteramos el mapa completo en busca de positivos
 		map.forEach(function(value, key) {
 			if(offhr > value) {
-				//console.log("Ha dado un positivo. Inserta +1 en clave: "+ key);
 				var valorOriginal = mapResultado.get(key);
 				mapResultado.set(key, ++valorOriginal);
 			}
