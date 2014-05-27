@@ -146,13 +146,23 @@ function iniciarSimulacion(numEscenarios,sexo) {
 /*************************
 * Empieza la simulacíon
 *************************/
-
+var startTime = Date.now();
 //Simulacion para hombres
 iniciarSimulacion(10000,"H");
+var endTime = Date.now();
+
+//Mostramos resultados
 console.log("\nLa simulacion para hombres da como resultados: \n");
 mostrarResultados(mapResHombres);
+console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
+
+startTime = Date.now();
 //Simulacion para mujeres
 iniciarSimulacion(10000,"M")
+endTime = Date.now();
+
+//Mostramos resultados
 console.log("\nLa simulacion para mujeres da como resultados: \n");
 mostrarResultados(mapResMujeres);
+console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
