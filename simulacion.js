@@ -9,15 +9,13 @@ var mathjs = require('mathjs'),
 // Load and instantiate Hashmap
 var HashMap = require('hashmap').HashMap;
 
-//Numero de escenarios a simular
-var escenarios = 250;
-
 // Construimos dos HashMap para nuestro caso de OFFhr
 var mapHombres = new HashMap();
 var mapMujeres = new HashMap();
 
-//Construimos el mapa de resultado
-var mapResultado = new HashMap();
+//Construimos los mapas de resultado
+var mapResHombres = new HashMap();
+var mapResMujeres = new HashMap();
 
 // Primera Columna TSL Hombres
 mapHombres.set("H-1-10-TSL","100,1");
@@ -60,33 +58,12 @@ mapMujeres.set("M-1-10000-WCA","128,1");
 */
 function calculaOffScore(hb, ret) {
 	var offhr = hb - 60*math.sqrt(ret);
-	console.log("hb vale = "+hb+"\n");
+	/*console.log("hb vale = "+hb+"\n");
 	console.log("ret vale = "+ret+"\n");
-	console.log("offhr vale = "+offhr+"\n")
+	console.log("offhr vale = "+offhr+"\n")*/
 	return offhr;
 }
 
-/**
-Hemoglobina en hombres:
-> d
-      mean           sd     
-  153.0354839    10.2799068
-
-Ret en hombres:
-> d2
-      mean          sd    
-  1.07185484   0.91594774 
-
-Hemoglob en mujeres:
-> d3
-      mean           sd     
-  138.1539683    11.0633002 
-
-Ret en mujeres:
-> d4
-      mean          sd    
-  1.30269841   0.83675812 
-**/
 
 /**
 * Dados unos valores aleatorios de hb y ret, y el sexo de la muestra
@@ -99,36 +76,29 @@ function buscaPositivos(hb, ret, sex) {
 	//si los valores generados no son negativos, calculamos offhr
 	if(ret > 0 && hb > 0) {
 		 offhr = calculaOffScore(hb,ret);
-		 console.log("Entra en buscaPositivos con sex = "+sex);
 
 		if(sex === "H") {
-			//console.log("Entra en Hombres\n");
 			//Iteramos el mapa completo en busca de positivos
 			mapHombres.forEach(function(value, key) {
-				console.log("OFFhr vale = "+offhr);
+				console.log("OFF vale "+offhr+"\n");
+				console.log("Value es "+value+"\n");
 				if(offhr > value) {
-					positivos++;
+					mapResHombres.set(value++, key);
 					//No se si aqui sería necesario llevar la cuenta de que clave ha dado positivo
 					//Es decir, bajo que escenario (TSL,WCSL,WCA)
-					//Quiza en un mapa nuevo, como el de arriba: mapResultado
 				}
 			});
 		}
 		else if(sex === "M") {
-			//console.log("Entra en Mujeres\n");
-				mapMujeres.forEach(function(value, key) {
-					console.log("OFFhr vale = "+offhr);
-					if(offhr > value) {
-						positivos++;
-						//No se si aqui sería necesario llevar la cuenta de que clave ha dado positivo
-						//Es decir, bajo que escenario (TSL,WCSL,WCA)
-						//Quiza en un mapa nuevo, como el de arriba: mapResultado
-					}
-				});	
+			mapMujeres.forEach(function(value, key) {
+				if(offhr > value) {
+					mapResMujeres.set(value++, key);
+					//No se si aqui sería necesario llevar la cuenta de que clave ha dado positivo
+					//Es decir, bajo que escenario (TSL,WCSL,WCA)
+				}
+			});	
 		}
 	}
-	
-	return positivos;
 }
 
 /**
@@ -137,12 +107,33 @@ function buscaPositivos(hb, ret, sex) {
 **/
 function iniciarSimulacion(numEscenarios,sexo) {
 	var positivosEnc = 0;
+	var hbMedia = 0;
+	var hbStdDev = 0;
+	var retMedia = 0;
+	var retStdDev = 0;
+	// Si son hombres
+	if(sexo === "H") {
+		hbMedia = 153.0354839;
+		hbStdDev = 10.2799068;
+		retMedia = 1.07185484;
+		retStdDev = 0.91594774;
+	} // Si son mujeres
+	else if (sexo === "M") {
+		hbMedia = 138.1539683;
+		hbStdDev = 11.0633002;
+		retMedia = 1.30269841;
+		retStdDev = 0.83675812;
+	}
+
 	for (var i = 1; i <= numEscenarios; i++) {
-		// Habria que generarlo acorde a la media y desv. tipica del conjunto de datos
-		// Es decir, para mujeres tanto. Para hombres tanto.
-		// chance.normal({mean: 100, dev: 10});
-		var hb = chance.normal();		
-		var ret = chance.normal();
+		var hb = -1;
+		var ret = -1;
+		// Si se genera un numero negativo forzamos la generacion de otro
+		while(hb < 0 || ret < 0) {
+			hb = chance.normal({mean: hbMedia, dev: hbStdDev});
+			ret = chance.normal({mean: retMedia, dev: retStdDev});
+		}
+		//Asignamos el mapa correspondiente a positivosEnc
 		positivosEnc = buscaPositivos(hb,ret,sexo);
 	};
 	return positivosEnc;
@@ -153,4 +144,4 @@ function iniciarSimulacion(numEscenarios,sexo) {
 *************************/
 
 //Imprimimos el resultado de la simulacion
-console.log("\nSe han encontrado"+iniciarSimulacion(3,"M")+" Positivos en EPO");
+console.log("\nSe han encontrado: "+iniciarSimulacion(12,"H")+" Positivos en EPO");
