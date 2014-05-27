@@ -70,6 +70,7 @@ function calculaOffScore(hb, ret) {
 function mostrarResultados(hashMap) {
 	//console.log(hashMap);
 	hashMap.forEach(function(value, key){
+		hashMap.get(key);
 		console.log("Fila : "+key + " : " + " Columna: "+value+"\n");
 	});
 }
@@ -105,17 +106,13 @@ function buscaPositivos(numEscenarios, hbMedia, hbStdDev, retMedia, retStdDev, m
 		offhr = calculaOffScore(hb,ret);
 		//Iteramos el mapa completo en busca de positivos
 		map.forEach(function(value, key) {
-			console.log("OFF = "+offhr+" | Value = "+value+" | Condicion vale = "+(offhr > value)+"\n");
 			if(offhr > value) {
 				console.log("Ha dado un positivo. Inserta +1 en clave: "+ key);
 				var valorOriginal = mapResultado.get(key);
 				mapResultado.set(key, ++valorOriginal);
-				//No se si aqui sería necesario llevar la cuenta de que clave ha dado positivo
-				//Es decir, bajo que escenario (TSL,WCSL,WCA)
 			}
 		});
-	}
-	
+	}	
 	return mapResultado;
 }
 
@@ -152,7 +149,7 @@ function iniciarSimulacion(numEscenarios,sexo) {
 *************************/
 
 //Simulacion para hombres
-iniciarSimulacion(1,"H");
+iniciarSimulacion(10000,"H");
 console.log("\nLa simulacion para hombres da como resultados: \n");
 mostrarResultados(mapResHombres);
 
