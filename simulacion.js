@@ -106,7 +106,7 @@ function buscaPositivos(numEscenarios, hbMedia, hbStdDev, retMedia, retStdDev, m
 		//Iteramos el mapa completo en busca de positivos
 		map.forEach(function(value, key) {
 			if(offhr > value) {
-				console.log("Ha dado un positivo. Inserta +1 en clave: "+ key);
+				//console.log("Ha dado un positivo. Inserta +1 en clave: "+ key);
 				var valorOriginal = mapResultado.get(key);
 				mapResultado.set(key, ++valorOriginal);
 			}
@@ -153,5 +153,6 @@ console.log("\nLa simulacion para hombres da como resultados: \n");
 mostrarResultados(mapResHombres);
 
 //Simulacion para mujeres
-iniciarSimulacion(1,"M")
+iniciarSimulacion(10000,"M")
 console.log("\nLa simulacion para mujeres da como resultados: \n");
+mostrarResultados(mapResMujeres);
