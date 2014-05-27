@@ -1,3 +1,14 @@
+/*************************************************
+ * Practica - Computación para Ciencias e Ingeniería
+ * 
+ * Evaluación de la Calidad de los Marcadores 
+ * Antidopaje por Medio de Métodos de Monte Carlo
+ *
+ * Author: Francisco Javier Sánchez Carmona
+ * Date: 28 Mayo 2014
+ * 
+ * **********************************************/
+
 // Lib for Cloning objects in JS
 var clone = require('clone');
 
