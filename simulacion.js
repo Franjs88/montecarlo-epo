@@ -67,6 +67,28 @@ function calculaOffScore(hb, ret) {
 }
 
 /**
+Hemoglobina en hombres:
+> d
+      mean           sd     
+  153.0354839    10.2799068
+
+Ret en hombres:
+> d2
+      mean          sd    
+  1.07185484   0.91594774 
+
+Hemoglob en mujeres:
+> d3
+      mean           sd     
+  138.1539683    11.0633002 
+
+Ret en mujeres:
+> d4
+      mean          sd    
+  1.30269841   0.83675812 
+**/
+
+/**
 * Dados unos valores aleatorios de hb y ret, y el sexo de la muestra
 * devuelve un valor entero actualizado con el número de positivos detectados.
 **/
