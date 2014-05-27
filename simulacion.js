@@ -73,7 +73,7 @@ function calculaOffScore(hb, ret) {
 function mostrarResultados(hashMap) {
 	//console.log(hashMap);
 	hashMap.forEach(function(value, key){
-		console.log("Fila : "+key + " : " + " Columna: "+value+"\n");
+		console.log("Escenario: "+key + " | " + " Positivos: "+value+"\n");
 	});
 }
 
@@ -172,7 +172,7 @@ iniciarSimulacion(10000,"H");
 var endTime = Date.now();
 
 //Mostramos resultados
-console.log("\nLa simulacion para hombres da como resultados: \n");
+console.log("\nLa simulacion para HOMBRES da como resultados: \n");
 mostrarResultados(mapResHombres);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
@@ -186,7 +186,7 @@ iniciarSimulacion(10000,"M")
 endTime = Date.now();
 
 //Mostramos resultados
-console.log("\nLa simulacion para mujeres da como resultados: \n");
+console.log("\nLa simulacion para MUJERES da como resultados: \n");
 mostrarResultados(mapResMujeres);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
