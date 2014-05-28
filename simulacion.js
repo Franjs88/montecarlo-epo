@@ -81,9 +81,9 @@ function calculaOffScore(hb, ret) {
 /**
 * Immprime por pantalla un HashMap dado
 **/
-function mostrarResultados(hashMap) {
+function mostrarResultados(hashMap,numIter) {
 	hashMap.forEach(function(value, key){
-		console.log("Escenario: "+key + " | " + " Positivos: "+value+"\n");
+		console.log("Escenario: "+key + " | " + " % Error: "+((value*100)/numIter)+"\n");
 	});
 }
 
@@ -167,18 +167,19 @@ function simulacionAlternativa(numEscenarios,sexo) {
 	var retStdDev = 0;
 	// Si son hombres
 	if(sexo === "H") {
+		//Acorde a 3 Sigma
 		hbMedia = 155.0;
-		hbStdDev = 20.0;
+		hbStdDev = (175 - 155)/3;
 		retMedia = 1.1;
-		retStdDev = 1.1;
+		retStdDev = (2.2 -1.1)/3;
 		mapResHombres = buscaPositivos(numEscenarios,hbMedia,hbStdDev,
 			retMedia, retStdDev, mapHombres);
 	} // Si son mujeres
 	else if (sexo === "M") {
 		hbMedia = 140.0;
-		hbStdDev = 20;
+		hbStdDev = (160 - 140)/3;
 		retMedia = 1.25;
-		retStdDev = 0.95;
+		retStdDev = (2.2 - 1.25)/3;
 		mapResMujeres = buscaPositivos(numEscenarios,hbMedia,hbStdDev,
 			retMedia, retStdDev, mapMujeres);
 	}
@@ -195,7 +196,6 @@ function escribeCsv(hashMap) {
 			++cont
 		}
 	});
-	
 	return outData;
 }
 
@@ -204,16 +204,17 @@ function escribeCsv(hashMap) {
 * Empieza la simulacíon
 *
 *******************************/
+var numSimulaciones = 10000;
 /*
 * Simulacion basica Hombres
 */
 var startTime = Date.now();
-simulacionBasica(10000,"H");
+simulacionBasica(numSimulaciones,"H");
 var endTime = Date.now();
 
 //Mostramos resultados
 console.log("\nLa simulacion basica para HOMBRES da como resultados: \n");
-mostrarResultados(mapResHombres);
+mostrarResultados(mapResHombres,numSimulaciones);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
 //Volcamos datos a fichero csv
@@ -224,12 +225,12 @@ fs.writeFile("results-basic-hombres-epo.csv", outH);
 * simulacion alternativa hombres
 */
 startTime = Date.now();
-simulacionAlternativa(10000,"H");
+simulacionAlternativa(numSimulaciones,"H");
 endTime = Date.now();
 
 //Mostramos resultados
 console.log("\nLa simulacion alternativa para HOMBRES da como resultados: \n");
-mostrarResultados(mapResHombres);
+mostrarResultados(mapResHombres, numSimulaciones);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
 //Volcamos datos a fichero csv
@@ -240,12 +241,12 @@ fs.writeFile("results-alt-hombres-epo.csv", outHa);
 * Simulacion basica mujeres
 */
 startTime = Date.now();
-simulacionBasica(10000,"M")
+simulacionBasica(numSimulaciones,"M")
 endTime = Date.now();
 
 //Mostramos resultados
 console.log("\nLa simulacion basica para MUJERES da como resultados: \n");
-mostrarResultados(mapResMujeres);
+mostrarResultados(mapResMujeres, numSimulaciones);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
 //Volcamos datos a fichero csv
@@ -256,12 +257,12 @@ fs.writeFile("results-basic-mujeres-epo.csv", outM);
 * Simulacion alternativa mujeres
 */
 startTime = Date.now();
-simulacionAlternativa(10000,"M")
+simulacionAlternativa(numSimulaciones,"M")
 endTime = Date.now();
 
 //Mostramos resultados
 console.log("\nLa simulacion alternativa para MUJERES da como resultados: \n");
-mostrarResultados(mapResMujeres);
+mostrarResultados(mapResMujeres, numSimulaciones);
 console.log("\n===== La simulacion tardó: " + (endTime - startTime) + " milisegundos");
 
 //Volcamos datos a fichero csv
